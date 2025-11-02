@@ -70,6 +70,7 @@
     aside a {
       color: #0066cc;
       text-decoration: none;
+      cursor: pointer;
     }
     aside a:hover {
       text-decoration: underline;
@@ -79,6 +80,48 @@
       color: #666;
       font-size: 12px;
       margin: 40px 0 20px 0;
+    }
+
+    /* Popup overlay styles */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .popup {
+      background-color: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 350px;
+    }
+    .popup h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .popup p {
+      font-size: 15px;
+      margin: 10px 0 20px 0;
+    }
+    .popup button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .popup button:hover {
+      background-color: #004d99;
     }
   </style>
 </head>
@@ -101,8 +144,8 @@
     <aside>
       <h2>Important Pages</h2>
       <ul>
-        <li><a href="https://raw.githubusercontent.com/JasperSoosaar25/jaspers-packs/refs/heads/main/files/MyTexturePack_1.21.9.zip">My Minecraft 1.21.9-1.21.10 Resource Pack</a></li>
-        <li><a href="https://raw.githubusercontent.com/JasperSoosaar25/jaspers-packs/refs/heads/main/files/MyTexturePack_1.21.8.zip">My Minecraft 1.21.8 Resource Pack</a></li>
+        <li><a class="download-link" data-file="https://raw.githubusercontent.com/JasperSoosaar25/jaspers-packs/refs/heads/main/files/MyTexturePack_1.21.9.zip">My Minecraft 1.21.9-1.21.10 Resource Pack</a></li>
+        <li><a class="download-link" data-file="https://raw.githubusercontent.com/JasperSoosaar25/jaspers-packs/refs/heads/main/files/MyTexturePack_1.21.8.zip">My Minecraft 1.21.8 Resource Pack</a></li>
         <li><a href="#">Downloads</a></li>
         <li><a href="#">Modrinth Page</a></li>
         <li><a href="#">YouTube Channel</a></li>
@@ -114,10 +157,42 @@
     © 2025 Jasper’s Packs. All Rights Reserved.
   </footer>
 
+  <!-- Popup HTML -->
+  <div id="overlay" class="overlay">
+    <div class="popup">
+      <h2>📦 Reminder</h2>
+      <p>Make sure to unzip the resource pack files! :)</p>
+      <button id="continueBtn">Continue to Download</button>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const continueBtn = document.getElementById('continueBtn');
+    let downloadURL = '';
+
+    // When any resource pack link is clicked
+    document.querySelectorAll('.download-link').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        downloadURL = link.dataset.file;
+        overlay.style.display = 'flex';
+      });
+    });
+
+    // Continue button -> closes popup & starts download
+    continueBtn.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      if (downloadURL) {
+        window.location.href = downloadURL;
+      }
+    });
+
+    // Close popup by clicking outside
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.style.display = 'none';
+    });
+  </script>
+
 </body>
 </html>
-
-
-
-
-
